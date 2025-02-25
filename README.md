@@ -60,3 +60,7 @@ Isso abrirá o navegador, permitindo que você execute os notebooks do projeto.
 Sinta-se à vontade para contribuir com melhorias para este projeto! Basta abrir um **Pull Request** ou sugerir mudanças na aba de **Issues**.
 
 ---
+
+## 📜 Licença
+
+Este projeto está licenciado sob a **MIT License** - consulte o arquivo `LICENSE` para mais detalhes.
