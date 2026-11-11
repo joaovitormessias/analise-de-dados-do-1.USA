@@ -1,66 +1,47 @@
-# 📊 Análise de Dados do 1.USA
+# Understanding 1.USA.gov Link Traffic
 
-## 📌 Sobre os Dados
-Em 2011, o serviço de encurtamento de URL [Bitly](https://bitly.com) firmou uma parceria com o site do governo dos Estados Unidos, [USA.gov](https://www.usa.gov), para fornecer um feed de dados anônimos coletados de usuários que encurtavam links com domínios .gov ou .mil.
+**Explore time-zone coverage and user-agent patterns in a historical Bitly snapshot.**
 
-No mesmo ano, um **live feed** e **snapshots de hora em hora** ficaram disponíveis como arquivos de texto para download. Para os snapshots, cada linha dos arquivos segue o formato JSON, um padrão comum para representação de dados na web.
+This educational notebook compares plain-Python counting with pandas aggregation, separates missing from empty time-zone values, and visualizes Windows/non-Windows user-agent groups. It is an analysis of the bundled sample, not a current measurement of government-site traffic.
 
----
+## Reproduced findings
 
-## 🛠 Etapas do Projeto
-Este projeto passa por diversas etapas essenciais, incluindo:
+| Observation | Result |
+| --- | --- |
+| Records in the bundled snapshot | 3,560 |
+| America/New_York occurrences | 1,251 |
+| Empty time-zone strings | 521 |
+| Records without a time-zone field | 120 |
 
-1. **Coleta de Dados** 📥 - Download e armazenamento dos arquivos JSON.
-2. **Limpeza e Tratamento** 🧼 - Remoção de inconsistências e padronização dos dados.
-3. **Exploração e Análise** 🔍 - Identificação de padrões e tendências.
-4. **Visualização** 📊 - Geração de gráficos para melhor compreensão das informações extraídas.
+These counts were recomputed from `example.txt` during review. Missing values and empty strings are different categories. User-agent classification is a text heuristic, not a reliable identification of a person or device.
 
----
+## Run the notebook
 
-## 🚀 Configuração do Ambiente
-Para executar este projeto localmente, recomendamos o uso do **Anaconda**. Siga os passos abaixo para instalá-lo e ativá-lo:
-
-### 🔹 Instalação do Anaconda
-1. Baixe o instalador do Anaconda para seu sistema operacional [aqui](https://www.anaconda.com/products/distribution).
-2. Siga as instruções de instalação conforme o sistema operacional escolhido.
-3. Verifique a instalação abrindo um terminal e executando:
-   ```sh
-   conda --version
-   ```
-
-### 🔹 Criação e Ativação do Ambiente
-1. Crie um novo ambiente chamado `analise_usa`:
-   ```sh
-   conda create -n analise_usa python=3.9
-   ```
-2. Ative o ambiente:
-   - No Windows:
-     ```sh
-     conda activate analise_usa
-     ```
-   - No macOS/Linux:
-     ```sh
-     source activate analise_usa
-     ```
-3. Instale as dependências necessárias:
-   ```sh
-   conda install pandas matplotlib seaborn jupyter
-   ```
-
-### 🔹 Executando o Projeto
-Para iniciar a análise de dados, execute o seguinte comando no terminal:
-```sh
+```bash
+git clone https://github.com/joaovitormessias/analise-de-dados-do-1.USA.git
+cd analise-de-dados-do-1.USA
+python -m venv .venv
+source .venv/bin/activate
+pip install pandas numpy plotly jupyter
 jupyter notebook
 ```
-Isso abrirá o navegador, permitindo que você execute os notebooks do projeto.
 
----
+Open ` DadosdoBitly.ipynb` (the filename begins with a space) from this directory and run all cells in order. The notebook reads the bundled `example.txt`; no personal Windows directory is required.
 
-## 📢 Contribuição
-Sinta-se à vontade para contribuir com melhorias para este projeto! Basta abrir um **Pull Request** ou sugerir mudanças na aba de **Issues**.
+## Analysis workflow
 
----
+1. Parse JSON Lines into Python records.
+2. Count time zones with dictionaries, defaultdict, Counter, and pandas.
+3. Preserve explicit categories for absent and empty time-zone values.
+4. Group non-null user agents by time zone and a Windows string match.
+5. Normalize counts within each time zone to compare group shares.
 
-## 📜 Licença
+The defaultdict example now uses its actual parameter name. Group normalization uses `transform` so its output columns do not depend on changing `groupby.apply` behavior.
 
-Este projeto está licenciado sob a **MIT License** - consulte o arquivo `LICENSE` para mais detalhes.
+## Validation and limitations
+
+All 37 nonempty code cells executed sequentially during review; plot display was suppressed in the headless environment. This verifies computations, not the interactive chart layout. The notebook preserves educational Portuguese prose and historical outputs; rerun it to refresh outputs with your installed versions.
+
+The sample is historical, non-random, and incomplete. Counts describe recorded events, not unique visitors. No causal or population-level inference is supported. Dependency versions are not locked.
+
+[Data snapshot](example.txt) · [MIT code license](LICENSE) · [Maintainer](https://github.com/joaovitormessias)
